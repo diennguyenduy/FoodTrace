@@ -1,0 +1,189 @@
+#
+# Copyright IBM Corp All Rights Reserved
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+
+networks:
+  foodtrace:
+
+services:
+  ca.supplier.foodtrace.com:
+    image: hyperledger/fabric-ca:1.4.0
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.supplier.foodtrace.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.supplier.foodtrace.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
+    ports:
+      - '7054:7054'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.supplier.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw'
+    volumes:
+      - ./crypto-config/peerOrganizations/supplier.foodtrace.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.supplier.foodtrace.com
+    networks:
+      - foodtrace
+
+  ca.processor.foodtrace.com:
+    image: hyperledger/fabric-ca:1.4.0
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.processor.foodtrace.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.processor.foodtrace.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
+    ports:
+      - '8054:7054'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.processor.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw'
+    volumes:
+      - ./crypto-config/peerOrganizations/processor.foodtrace.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.processor.foodtrace.com
+    networks:
+      - foodtrace
+
+  ca.retailer.foodtrace.com:
+    image: hyperledger/fabric-ca:1.4.0
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.retailer.foodtrace.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.retailer.foodtrace.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA3_PRIVATE_KEY
+    ports:
+      - '9054:7054'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.retailer.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw'
+    volumes:
+      - ./crypto-config/peerOrganizations/retailer.foodtrace.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.retailer.foodtrace.com
+    networks:
+      - foodtrace
+
+  orderer.foodtrace.com:
+    container_name: orderer.foodtrace.com
+    image: hyperledger/fabric-orderer:1.4.0
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/orderer/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+    command: orderer
+    ports:
+      - '7050:7050'
+    volumes:
+      - ./channel-artifacts/:/etc/hyperledger/configtx
+      - ./crypto-config/ordererOrganizations/foodtrace.com/orderers/orderer.foodtrace.com/:/etc/hyperledger/orderer
+    networks:
+      - foodtrace
+
+  peer0.supplier.foodtrace.com:
+    container_name: peer0.supplier.foodtrace.com
+    image: hyperledger/fabric-peer:1.4.0
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ID=peer0.supplier.foodtrace.com
+      - FABRIC_LOGGING_SPEC=info
+      - CORE_CHAINCODE_LOGGING_LEVEL=info
+      - CORE_PEER_LOCALMSPID=SupplierMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_ADDRESS=peer0.supplier.foodtrace.com:7051
+      # # the following setting starts chaincode containers on the same
+      # # bridge network as the peers
+      # # https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_foodtrace
+      # Use by explorer
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.supplier.foodtrace.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.supplier.foodtrace.com:7051
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: peer node start
+    ports:
+      - '7051:7051'
+      - '7053:7053'
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/supplier.foodtrace.com/peers/peer0.supplier.foodtrace.com/msp:/etc/hyperledger/msp/peer
+      - ./crypto-config/peerOrganizations/supplier.foodtrace.com/users:/etc/hyperledger/msp/users
+      - ./channel-artifacts:/etc/hyperledger/configtx
+    networks:
+      - foodtrace
+
+  peer0.processor.foodtrace.com:
+    container_name: peer0.processor.foodtrace.com
+    image: hyperledger/fabric-peer:1.4.0
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ID=peer0.processor.foodtrace.com
+      - FABRIC_LOGGING_SPEC=info
+      - CORE_CHAINCODE_LOGGING_LEVEL=info
+      - CORE_PEER_LOCALMSPID=StudentMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_ADDRESS=peer0.processor.foodtrace.com:7051
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_foodtrace
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.processor.foodtrace.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.processor.foodtrace.com:7051
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: peer node start
+    ports:
+      - '8051:7051'
+      - '8053:7053'
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/processor.foodtrace.com/peers/peer0.processor.foodtrace.com/msp:/etc/hyperledger/msp/peer
+      - ./crypto-config/peerOrganizations/processor.foodtrace.com/users:/etc/hyperledger/msp/users
+      - ./channel-artifacts:/etc/hyperledger/configtx
+    networks:
+      - foodtrace
+
+  peer0.retailer.foodtrace.com:
+    container_name: peer0.retailer.foodtrace.com
+    image: hyperledger/fabric-peer:1.4.0
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ID=peer0.retailer.foodtrace.com
+      - FABRIC_LOGGING_SPEC=info
+      - CORE_CHAINCODE_LOGGING_LEVEL=info
+      - CORE_PEER_LOCALMSPID=RetailerMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_ADDRESS=peer0.retailer.foodtrace.com:7051
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_foodtrace
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.retailer.foodtrace.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.retailer.foodtrace.com:7051
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: peer node start
+    ports:
+      - '9051:7051'
+      - '9053:7053'
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/retailer.foodtrace.com/peers/peer0.retailer.foodtrace.com/msp:/etc/hyperledger/msp/peer
+      - ./crypto-config/peerOrganizations/retailer.foodtrace.com/users:/etc/hyperledger/msp/users
+      - ./channel-artifacts:/etc/hyperledger/configtx
+    networks:
+      - foodtrace
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:1.4.0
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.supplier.foodtrace.com:7051
+      - CORE_PEER_LOCALMSPID=SupplierMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.foodtrace.com/users/Admin@supplier.foodtrace.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./chaincode:/opt/gopath/src/github.com/chaincode
+      - $GOPATH/src/github.com/hyperledger:/opt/gopath/src/github.com/hyperledger
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+      - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+    networks:
+      - foodtrace
