@@ -1,0 +1,192 @@
+Organizations:
+
+  - &OrdererOrg
+      Name: OrdererOrg
+
+      ID: OrdererMSP
+
+      MSPDir: crypto-config/ordererOrganizations/foodtrace.com/msp
+
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Writers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Admins:
+          Type: Signature
+          Rule: "OR('OrdererMSP.admin')"
+
+  - &Supplier
+      Name: SupplierMSP
+
+      ID: SupplierMSP
+
+      MSPDir: crypto-config/peerOrganizations/supplier.foodtrace.com/msp
+
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('SupplierMSP.admin', 'SupplierMSP.peer', 'SupplierMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('SupplierMSP.admin', 'SupplierMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('SupplierMSP.admin')"
+
+      AnchorPeers:
+        - Host: peer0.supplier.foodtrace.com
+          Port: 7051
+
+  - &Processor
+      Name: ProcessorMSP
+
+      ID: ProcessorMSP
+
+      MSPDir: crypto-config/peerOrganizations/processor.foodtrace.com/msp
+
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('ProcessorMSP.admin', 'ProcessorMSP.peer', 'ProcessorMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('ProcessorMSP.admin', 'ProcessorMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('ProcessorMSP.admin')"
+
+      AnchorPeers:
+        - Host: peer0.processor.foodtrace.com
+          Port: 7051
+
+  - &Retailer
+      Name: RetailerMSP
+
+      ID: RetailerMSP
+
+      MSPDir: crypto-config/peerOrganizations/retailer.foodtrace.com/msp
+
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('RetailerMSP.admin', 'RetailerMSP.peer', 'RetailerMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('RetailerMSP.admin', 'RetailerMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('RetailerMSP.admin')"
+
+      AnchorPeers:
+        - Host: peer0.retailer.foodtrace.com
+          Port: 7051
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V1_3: true
+
+  Orderer: &OrdererCapabilities
+    V1_1: true
+
+  Application: &ApplicationCapabilities
+    V1_3: true
+    V1_2: false
+    V1_1: false
+
+
+Application: &ApplicationDefaults
+
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+
+  OrdererType: solo
+
+  Addresses:
+    - orderer.foodtrace.com:7050
+
+  BatchTimeout: 2s
+
+  BatchSize:
+
+    MaxMessageCount: 10
+
+    AbsoluteMaxBytes: 99 MB
+
+    PreferredMaxBytes: 512 KB
+
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+Channel: &ChannelDefaults
+  Policies:
+    # Who may invoke the 'Deliver' API
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    # Who may invoke the 'Broadcast' API
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    # By default, who may modify elements at this config level
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+
+  TwoOrgsOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      SampleConsortium:
+        Organizations:
+          - *Supplier
+          - *Processor
+          - *Retailer
+  TwoOrgsChannel:
+    Consortium: SampleConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Supplier
+        - *Processor
+        - *Retailer
+      Capabilities:
+        <<: *ApplicationCapabilities

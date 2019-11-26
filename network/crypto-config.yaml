@@ -1,0 +1,29 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: foodtrace.com
+    Specs:
+      - Hostname: orderer
+PeerOrgs:
+  - Name: Supplier
+    Domain: supplier.foodtrace.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
+  - Name: Processor
+    Domain: processor.foodtrace.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
+  - Name: Retailer
+    Domain: retailer.foodtrace.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
