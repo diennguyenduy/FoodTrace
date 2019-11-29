@@ -20,7 +20,7 @@ COUNTER=1
 MAX_RETRY=5
 ORDERER_CA=
 
-CC_SRC_PATH="github.com/chaincode/academy/go"
+CC_SRC_PATH="github.com/chaincode/foodtrace/go"
 
 echo "Channel name : "$CHANNEL_NAME
 
@@ -48,6 +48,11 @@ updateAnchorPeers() {
     	sleep $DELAY
     	echo
 	elif [ $CLUSTER -eq 2 ]; then
+		verifyResult $res "Anchor peer update failed"
+    	echo "===================== Anchor peers for CLUSTER \"$CORE_PEER_LOCALMSPID\" on \"$CHANNEL_NAME\" is updated successfully ===================== "
+    	sleep $DELAY
+    	echo
+	elif [ $CLUSTER -eq 3 ]; then
 		verifyResult $res "Anchor peer update failed"
     	echo "===================== Anchor peers for CLUSTER \"$CORE_PEER_LOCALMSPID\" on \"$CHANNEL_NAME\" is updated successfully ===================== "
     	sleep $DELAY
@@ -100,14 +105,18 @@ createChannel() {
 
 
 joinChannel () {
-	for cluster in 1 2; do
+	for cluster in 1 2 3; do
 		joinChannelWithRetry $cluster
 		if [ $CLUSTER -eq 1 ]; then
-			echo "===================== peer0.academy.foodtrace.com joined on the channel \"$CHANNEL_NAME\" ===================== "
+			echo "===================== peer0.supplier.foodtrace.com joined on the channel \"$CHANNEL_NAME\" ===================== "
 			sleep $DELAY
 			echo
 		elif  [ $CLUSTER -eq 2 ]; then
-			echo "===================== peer0.student.foodtrace.com joined on the channel \"$CHANNEL_NAME\" ===================== "
+			echo "===================== peer0.processor.foodtrace.com joined on the channel \"$CHANNEL_NAME\" ===================== "
+			sleep $DELAY
+			echo
+		elif  [ $CLUSTER -eq 3 ]; then
+			echo "===================== peer0.retailer.foodtrace.com joined on the channel \"$CHANNEL_NAME\" ===================== "
 			sleep $DELAY
 			echo
 		fi
@@ -124,10 +133,12 @@ echo "Having all peers join the channel..."
 joinChannel
 
 ## Set the anchor peers for each cluster in the channel
-echo "Updating anchor peers for academy..."
+echo "Updating anchor peers for supplier..."
 updateAnchorPeers 1
-echo "Updating anchor peers for student..."
+echo "Updating anchor peers for processor..."
 updateAnchorPeers 2
+echo "Updating anchor peers for retailer..."
+updateAnchorPeers 3
 
 
 echo
