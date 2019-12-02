@@ -3,12 +3,12 @@
 const { FileSystemWallet, Gateway } = require('fabric-network');
 const path = require('path');
 
-const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
+const ccpPath = path.resolve(__dirname, '..', 'network', 'connection-org1.json');
 
 var QuerryFood = async function(id) {
   try {
     // Create a new file system based wallet for managing identities.
-    const walletPath = path.join(process.cwd(), 'wallet');
+    const walletPath = path.join(process.cwd(), '..', 'wallet');
     const wallet = new FileSystemWallet(walletPath);
     console.log(`Wallet path: ${walletPath}`);
 
