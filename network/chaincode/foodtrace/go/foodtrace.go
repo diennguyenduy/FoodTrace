@@ -1,10 +1,10 @@
 package main
 
 import (
-	// "encoding/json"
+	"encoding/json"
 	"fmt"
 
-	// "github.com/hyperledger/fabric/core/chaincode/lib/cid"
+	"github.com/hyperledger/fabric/core/chaincode/lib/cid"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	sc "github.com/hyperledger/fabric/protos/peer"
 )
@@ -14,51 +14,49 @@ type SmartContract struct {
 
 type Supplier struct {
 	SupplierID string
-	Name string
-	Location string
+	Name       string
+	Location   string
 }
 
 type Processor struct {
 	ProcessorID string
-	Name string
-	Location string
+	Name        string
+	Location    string
 }
 
 type Retailer struct {
 	RetailerID string
-	Name string
-	Location string
+	Name       string
+	Location   string
 }
 
 type Product_Supplier struct {
-	ProductID string
-	ProductName string
-	SupplierID string
+	ProductID          string
+	ProductName        string
+	SupplierID         string
 	SupplierExportDate string
-	Quantity uint
-
+	Quantity           uint
 }
 
 type Product_Processor struct {
-	ProductID string
-	ProductName string
-	ProcessorID string
+	ProductID           string
+	ProductName         string
+	ProcessorID         string
 	ProcessprImportDate string
 	ProcessprExportDate string
-	Quantity uint
-	Product_SupplierID string
-
+	Quantity            uint
+	Product_SupplierID  string
 }
 
 type Product_Retailer struct {
-	ProductID string
-	ProductName string
-	RetailerID string
-	RetailerImDate string
-	Quantity uint
+	ProductID           string
+	ProductName         string
+	RetailerID          string
+	RetailerImDate      string
+	Quantity            string
 	Product_ProcessorID string
-
 }
+
 func (s *SmartContract) Init(stub shim.ChaincodeStubInterface) sc.Response {
 	return shim.Success(nil)
 }
@@ -69,7 +67,13 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 	switch function {
 
 	case "CreateSupplier":
-		return CreateSupplier(stub,args)
+		return CreateSupplier(stub, args)
+
+	case "AddRetailerProductInfo":
+		return AddRetailerProductInfo(stub, args)
+
+	case "GetRetailerProductInfo":
+		return GetRetailerProductInfo(stub, args)
 
 	// case "CreateProcessor":
 	// 	return CreateProcessor(stub,args)
@@ -115,6 +119,66 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 	}
 }
 
+func AddRetailerProductInfo(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	var ProductInfo Product_Retailer
+
+	if len(args) != 6 {
+		return shim.Error("Incorrect number of arguments!")
+	}
+
+	ProductInfo.ProductID = args[0]
+	if ProductInfo.ProductID == "" {
+		return shim.Error("Product ID can not be empty!")
+	}
+
+	MSPID, err := cid.GetMSPID(stub)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	if MSPID != "RetailerMSP" {
+		return shim.Error(err.Error())
+	}
+
+	ProductInfo.ProductName = args[1]
+	ProductInfo.RetailerID = args[2]
+	ProductInfo.RetailerImDate = args[3]
+	ProductInfo.Quantity = args[4]
+	ProductInfo.Product_ProcessorID = args[5]
+
+	ProductInfoJSONasBytes, err := json.Marshal(ProductInfo)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	err = stub.PutState(ProductInfo.ProductID, ProductInfoJSONasBytes) // ProductInfo.ProductID: key - ProductInfoJSONasBytes: value
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
+
+func GetRetailerProductInfo(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments.")
+	}
+
+	ProductID := args[0] // Query by ID
+
+	key := ProductID
+	subjectAsBytes, err := stub.GetState(key)
+
+	if err != nil {
+		return shim.Error("Failed")
+	}
+
+	if subjectAsBytes == nil {
+		return shim.Error("Product does not exist - " + args[0])
+	}
+
+	return shim.Success(subjectAsBytes)
+}
 
 // func TeacherRegisterSubject(stub shim.ChaincodeStubInterface, args []string) sc.Response {
 
@@ -1097,7 +1161,6 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 // 	return shim.Success(jsonRow)
 // }
 
-
 // func GetStudentsBySubject(stub shim.ChaincodeStubInterface, args []string) sc.Response {
 // 	// MSPID, err := cid.GetMSPID(stub)
 
@@ -1178,7 +1241,6 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 
 // 	return shim.Success(jsonRow)
 // }
-
 
 // 		certificate:= Certificate{}
 // 		json.Unmarshal(record.Value, &certificate)
@@ -1312,7 +1374,6 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 
 // 	return shim.Success(jsonRow)
 // }= args[0]
-
 
 // 		certificate:= Certificate{}
 // 		json.Unmarshal(record.Value, &certificate)
@@ -1898,7 +1959,6 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 
 // 	return shim.Success(jsonRow)
 // }d, err := allCertificates.Next()
-
 
 // 		certificate:= Certificate{}
 // 		json.Unmarshal(record.Value, &certificate)

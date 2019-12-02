@@ -15,10 +15,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.supplier.foodtrace.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.supplier.foodtrace.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ef1a2c00cdc96b3ff35be4e2c44211f7b38fae81e57831428723d6a47e1bdf07_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/8e77621337fba984b9224c71aa63dcfcf64ea3d6feecb99dbf62a8964caf43f2_sk
     ports:
       - '7054:7054'
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.supplier.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ef1a2c00cdc96b3ff35be4e2c44211f7b38fae81e57831428723d6a47e1bdf07_sk -b admin:adminpw'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.supplier.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/8e77621337fba984b9224c71aa63dcfcf64ea3d6feecb99dbf62a8964caf43f2_sk -b admin:adminpw'
     volumes:
       - ./crypto-config/peerOrganizations/supplier.foodtrace.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.supplier.foodtrace.com
@@ -31,10 +31,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.processor.foodtrace.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.processor.foodtrace.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/bffb77175025cde1d092c02bb2659e586ca87c97e818686f73bdd27b80ee4719_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/49d2dfb029e10402c908edb1872cb7d9b2b64ae17e35f96bee61c35f6ad53fe0_sk
     ports:
       - '8054:7054'
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.processor.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/bffb77175025cde1d092c02bb2659e586ca87c97e818686f73bdd27b80ee4719_sk -b admin:adminpw'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.processor.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/49d2dfb029e10402c908edb1872cb7d9b2b64ae17e35f96bee61c35f6ad53fe0_sk -b admin:adminpw'
     volumes:
       - ./crypto-config/peerOrganizations/processor.foodtrace.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.processor.foodtrace.com
@@ -47,10 +47,10 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.retailer.foodtrace.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.retailer.foodtrace.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/19906d80a197465a2739f803345158a0234be8d63642ca0be9f94d47b11e622b_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/feb12f04d65c1ef438528a36079963db1b176ad5ee74621e640d9fbf5338a390_sk
     ports:
       - '9054:7054'
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.retailer.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/19906d80a197465a2739f803345158a0234be8d63642ca0be9f94d47b11e622b_sk -b admin:adminpw'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.retailer.foodtrace.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/feb12f04d65c1ef438528a36079963db1b176ad5ee74621e640d9fbf5338a390_sk -b admin:adminpw'
     volumes:
       - ./crypto-config/peerOrganizations/retailer.foodtrace.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.retailer.foodtrace.com
