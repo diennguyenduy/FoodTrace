@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './addFood.css';
+// import * as actions from '../../redux/actions';
+// import store from '../../redux/store';
 
 class AddFood extends Component {
   constructor(props) {
@@ -14,27 +16,33 @@ class AddFood extends Component {
       loading: false
     };
   }
-  onChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+
+  // async handleClick() {
+  //   let type = parseInt(
+  //     document
+  //       .querySelector('div.slick-slide.slick-active.slick-current div.item-pet')
+  //       .getAttribute('data-type')
+  //   );
+
+  //   let pet = Pet.find((element) => {
+  //     return element.type === type;
+  //   });
+
+  //   await store.dispatch(
+  //     actions.createNewPet(pet.type, pet.targetFund, pet.duration, this.state.purpose)
+  //   );
+  //   await store.dispatch(actions.getAllPets());
+  // }
+
+  // handleChange = (e) => {
+  //   this.setState({ purpose: e.target.value });
+  // };
 
   render() {
     return (
       <div className='form-style-10'>
         <h1>Đăng ký phát hành thực phẩm</h1>
-        {/* <!-- the form data is sent to a page on the server called "/addFood".
-      This page contains a server-side script that handles the form data --> */}
         <form method='post' action='/addFood' novalidate>
-          {/* <!-- The `method` attribute: specifies the HTTP method (GET or POST) to be used
-          when submitting the form data:
-          -post: form data NOT visible in the address bar of the new browser tab
-          -get: the form values is visible in the address bar of the new browser tab
-        --> */}
-          {/* <!--thuộc tính `novalidate`: form sẽ không bắt lỗi nhập liệu khi submit
-        ví dụ: không bắt lỗi khi nhập sai kiểu email: 123@@gmail.com
-        --> */}
           <div className='section'>Thông tin thực phẩm</div>
           <div className='inner-wrap'>
             <label>

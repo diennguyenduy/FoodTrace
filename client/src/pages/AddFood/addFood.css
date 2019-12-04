@@ -1,7 +1,8 @@
 body {
-  background-image: url('../../src/images/addFood_bg.jpg');
+  /* background-image: url('../../assets/img/addFood_bg.jpg'); */
   background-size: cover;
 }
+
 .form-style-10 {
   max-width: 450px;
   padding: 30px;

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import './query.css';
 
-// Gọi api ở bên actions, cho vào store
-// Dữ liệu ở render query ở store qua redux
-
 class QueryFood extends Component {
   constructor(props) {
     super(props);

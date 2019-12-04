@@ -1,5 +1,5 @@
 body {
-  background-image: url('../../images/index.jpg');
+  background-image: url('../../assets/img/index.jpg');
   background-size: cover;
   margin: auto;
 }
@@ -25,7 +25,6 @@ h1 {
 
 .card {
   position: relative;
-  float: left;
   margin-right: 20px;
   text-align: left;
   width: 185px;
@@ -33,7 +32,7 @@ h1 {
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
-  background: #fff;
+  background: gainsboro;
   -webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
   box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
@@ -50,11 +49,10 @@ h1 {
 
 .card p {
   margin: auto;
-  color: #ff4411;
+  color: black;
   text-decoration: none;
   text-align: center;
   padding-top: 15%;
-  border: solid cornflowerblue;
   width: 150px;
   height: 50px;
 }
