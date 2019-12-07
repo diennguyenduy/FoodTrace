@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import './addFood.css';
-// import * as actions from '../../redux/actions';
-// import store from '../../redux/store';
+import './index.css';
+// import * as actions from '../../../redux/actions';
+// import store from '../../../redux/store';
 
-class AddFood extends Component {
+class RetailerAddInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,4 +75,4 @@ class AddFood extends Component {
   }
 }
 
-export default AddFood;
+export default RetailerAddInfo;

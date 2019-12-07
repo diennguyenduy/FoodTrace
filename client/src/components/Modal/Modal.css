@@ -1,0 +1,87 @@
+.modal-dialog {
+  color: black;
+  font: bold 14px Arial, Helvetica;
+  text-align: center;
+  z-index: 1; /* Sit on top */
+  left: 35%;
+  /* top: 40%; */
+  width: 40%; /* Full width */
+  height: 30%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(255, 255, 255, 0.9);
+  margin: 0px auto;
+  padding: 2%;
+  height: 600px;
+  max-width: 1000px;
+}
+
+.role-card {
+  display: inline-flexbox;
+}
+
+.supplier-card,
+.processor-card,
+.retailer-card {
+  display: grid;
+  margin: 5%;
+}
+
+.modal-dialog #button {
+  border: 1px solid #00748f;
+  height: 40px;
+  width: 140px;
+  padding: 0;
+  cursor: pointer;
+  font: bold 14px Arial, Helvetica;
+  color: black;
+  text-transform: uppercase;
+  text-align: center;
+  background-color: #29f500;
+  background-image: linear-gradient(tp top, #31b2c3, #32cd32);
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 0 #fff;
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 0 #fff;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 0 #fff;
+  margin-bottom: 2px;
+}
+
+.modal-dialog button:hover,
+.modal-dialog button:focus {
+  background-color: #31b2c3;
+  background-image: linear-gradient(to top, #0483a0, #9de6f0);
+}
+
+.modal-dialog #button:active {
+  outline: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+}
+
+#button::-moz-focus-inner {
+  border: 0;
+}
+
+#cancel-button {
+  border-radius: 50%;
+  float: right;
+}
+
+#close-icon {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+}
+
+#image-icon {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+#modal-tittle {
+  font-size: large;
+}
