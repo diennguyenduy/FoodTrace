@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
 import './index.css';
-// import userFoodLogo from '../../assets/img/user-food.jpg';
 import partOfFoodLogo from '../../assets/img/part_of_food.jpg';
 import businessLogo from '../../assets/img/business.png';
 import submitLogo from '../../assets/img/submit.png';
@@ -25,22 +23,16 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div className='home-page'>
         <h1>Food Trace</h1>
         <div className='hand'>
-          {/* <div className='card suitdiamonds'>
-            <img src={partOfFoodLogo} className='image-icon' alt='Logo' />
-            <p>Điều tra thành phần</p>
-          </div> */}
           <div className='card suitdiamonds'>
-            <Button id='add-info-button' onClick={this.openModal}>
-              <img src={submitLogo} className='image-icon' alt='Logo'></img>
-            </Button>
+            <img src={submitLogo} className='image-icon' alt='Logo' onClick={this.openModal}></img>
             <RoleModal toggle={true} isOpen={this.state.isOpen} toggle={this.openModal} />
             <p>Xuất bản hàng hóa</p>
           </div>
           <div className='card suitdiamonds'>
-            <Link to={`/queryFood`}>
+            <Link to={`/queryInfo`}>
               <img src={partOfFoodLogo} className='image-icon' alt='Logo' />
             </Link>
             <p>Truy xuất thông tin sản phẩm</p>
