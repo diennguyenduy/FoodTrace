@@ -3,10 +3,6 @@ import { Table } from 'reactstrap';
 import './history.css';
 
 class History extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   // async componentDidMount() {
   //   await store.dispatch(actions.getAllHistory());
   // }

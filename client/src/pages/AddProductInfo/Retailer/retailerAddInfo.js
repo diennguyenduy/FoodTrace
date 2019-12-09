@@ -17,17 +17,27 @@ class RetailerAddInfo extends Component {
       Product_ProcessorID: null,
       loading: false
     };
-    this.genQrCode = this.genQrCode.bind(this);
     this.submit = this.submit.bind(this);
   }
 
-  // handleChange = (e) => {
-  //   this.setState({ purpose: e.target.value });
-  // };
-
-  async genQrCode() {
-    console.log('Here is QR code');
-  }
+  handleChangeProductId = (e) => {
+    this.setState({ ProductID: e.target.value });
+  };
+  handleChangeProductName = (e) => {
+    this.setState({ ProductName: e.target.value });
+  };
+  handleChangeRetailerId = (e) => {
+    this.setState({ RetailerID: e.target.value });
+  };
+  handleChangeImDate = (e) => {
+    this.setState({ RetailerImDate: e.target.value });
+  };
+  handleChangeQuantity = (e) => {
+    this.setState({ Quantity: e.target.value });
+  };
+  handleChangeProcessorId = (e) => {
+    this.setState({ Product_ProcessorID: e.target.value });
+  };
 
   async submit() {
     console.log('Gen QR code and submit success');
@@ -41,24 +51,28 @@ class RetailerAddInfo extends Component {
           <div className='section'>Thông tin thực phẩm</div>
           <div className='inner-wrap'>
             <label>
-              Product ID <input id='text' type='text' name='field' />
+              Product ID{' '}
+              <input id='text' type='text' name='field' onChange={this.handleChangeProductId} />
             </label>
             <label>
-              Product Name <input id='text' type='text' name='field' />
+              Product Name{' '}
+              <input id='text' type='text' name='field' onChange={this.handleChangeProductName} />
             </label>
             <label>
-              Retailer ID <input id='text' type='text' name='field' />
+              Retailer ID{' '}
+              <input id='text' type='text' name='field' onChange={this.handleChangeRetailerId} />
             </label>
             <label>
-              Import Date <input id='text' type='text' name='field' />
+              Import Date{' '}
+              <input id='text' type='text' name='field' onChange={this.handleChangeImDate} />
             </label>
             <label>
               Quantity
-              <input id='text' type='text' name='field' />
+              <input id='text' type='text' name='field' onChange={this.handleChangeQuantity} />
             </label>
             <label>
               Product Processor ID
-              <input id='text' type='text' name='field' />
+              <input id='text' type='text' name='field' onChange={this.handleChangeProcessorId} />
             </label>
           </div>
         </form>
@@ -70,7 +84,29 @@ class RetailerAddInfo extends Component {
           <UncontrolledCollapse toggler='#toggler'>
             <Card>
               <CardBody>
-                <QRCode level='H' includeMargin value='https://facebook.com/diennguyenduy' />
+                <QRCode
+                  level='H'
+                  includeMargin
+                  value={
+                    'Product ID: ' +
+                    this.state.ProductID +
+                    '\n' +
+                    'Product name: ' +
+                    this.state.ProductName +
+                    '\n' +
+                    'Retailer ID: ' +
+                    this.state.RetailerID +
+                    '\n' +
+                    'Import Date: ' +
+                    this.state.RetailerImDate +
+                    '\n' +
+                    'Quantity: ' +
+                    this.state.Quantity +
+                    '\n' +
+                    'Processor ID: ' +
+                    this.state.Product_ProcessorID
+                  }
+                />
               </CardBody>
               <CardFooter>
                 <Button color='danger' id='toggler'>
