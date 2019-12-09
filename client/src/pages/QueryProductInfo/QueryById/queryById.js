@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Input } from 'reactstrap';
+import { Button, Input, Table } from 'reactstrap';
 // import { compose } from 'redux';
 // import { connect } from 'react-redux';
 import './query.css';
 
-class QueryFood extends Component {
+class QueryById extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,8 +34,9 @@ class QueryFood extends Component {
 
   render() {
     return (
-      <div>
-        <div className='form-wrapper'>
+      <div className='query-info-by-id'>
+        <div className='query-id'>
+          <p>Truy xuất thông tin theo ID của sản phẩm</p>
           <Input
             type='string'
             id='query'
@@ -45,21 +46,28 @@ class QueryFood extends Component {
           <Button id='submit' onClick={this.queryInfo}>
             Truy Xuất
           </Button>
-          <Button id='submit' onClick={this.queryAlls}>
-            Query All
-          </Button>
         </div>
-        <table cellspacing='0' id='query_source'>
-          <tr>
-            <th>Thông tin của sảm phẩm</th>
-          </tr>
-          <tr>
-            <td>{this.state.productInfo}</td>
-          </tr>
-        </table>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Thông tin của sảm phẩm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mark</td>
+            </tr>
+            <tr>
+              <td>Jacob</td>
+            </tr>
+            <tr>
+              <td>Larry</td>
+            </tr>
+          </tbody>
+        </Table>
       </div>
     );
   }
 }
 
-export default QueryFood;
+export default QueryById;

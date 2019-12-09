@@ -2,24 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import './Modal.css';
-import cancelLogo from '../../assets/img/close-button.png';
 import farmLogo from '../../assets/img/Farm.png';
 import transportLogo from '../../assets/img/shipped.png';
 import retailerLogo from '../../assets/img/supermarket.png';
 
 class RoleModal extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>
         <Modal className='modal-dialog' isOpen={this.props.isOpen} toggle={this.props.toggle}>
-          <ModalHeader toggle={this.props.toggle}>
-            <Button id='cancel-button' onClick={this.props.toggle}>
-              <img id='close-icon' src={cancelLogo} alt='Cancel'></img>
-            </Button>
+          <ModalHeader>
             <p id='modal-tittle'>Lựa chọn khâu nhập liệu</p>
           </ModalHeader>
           <ModalBody>
@@ -48,6 +40,9 @@ class RoleModal extends React.Component {
             Lưu ý: Nếu bạn chọn sai vị trí của mình thì quá trình thêm thông tin cho sản phẩm sẽ xảy
             ra lỗi
           </ModalFooter>
+          <Button id='cancel-button' onClick={this.props.toggle}>
+            Cancel
+          </Button>
         </Modal>
       </div>
     );

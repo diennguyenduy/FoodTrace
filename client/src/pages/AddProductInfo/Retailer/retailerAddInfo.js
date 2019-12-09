@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { UncontrolledCollapse, Button, CardBody, CardFooter, Card } from 'reactstrap';
+import QRCode from 'qrcode.react';
 import './index.css';
 // import * as actions from '../../../redux/actions';
 // import store from '../../../redux/store';
@@ -15,34 +17,27 @@ class RetailerAddInfo extends Component {
       Product_ProcessorID: null,
       loading: false
     };
+    this.genQrCode = this.genQrCode.bind(this);
+    this.submit = this.submit.bind(this);
   }
-
-  // async handleClick() {
-  //   let type = parseInt(
-  //     document
-  //       .querySelector('div.slick-slide.slick-active.slick-current div.item-pet')
-  //       .getAttribute('data-type')
-  //   );
-
-  //   let pet = Pet.find((element) => {
-  //     return element.type === type;
-  //   });
-
-  //   await store.dispatch(
-  //     actions.createNewPet(pet.type, pet.targetFund, pet.duration, this.state.purpose)
-  //   );
-  //   await store.dispatch(actions.getAllPets());
-  // }
 
   // handleChange = (e) => {
   //   this.setState({ purpose: e.target.value });
   // };
 
+  async genQrCode() {
+    console.log('Here is QR code');
+  }
+
+  async submit() {
+    console.log('Gen QR code and submit success');
+  }
+
   render() {
     return (
       <div className='form-style-10'>
         <h1>Đăng ký phát hành thực phẩm</h1>
-        <form method='post' action='/addFood' novalidate>
+        <form novalidate>
           <div className='section'>Thông tin thực phẩm</div>
           <div className='inner-wrap'>
             <label>
@@ -66,10 +61,25 @@ class RetailerAddInfo extends Component {
               <input id='text' type='text' name='field' />
             </label>
           </div>
-          <div className='button-section'>
-            <input type='submit' name='submit' />
-          </div>
         </form>
+        <div className='button-section'>
+          <Button color='primary' id='toggler'>
+            View QR Code
+          </Button>
+          <Button onClick={this.submit}>Submit</Button>
+          <UncontrolledCollapse toggler='#toggler'>
+            <Card>
+              <CardBody>
+                <QRCode level='H' includeMargin value='https://facebook.com/diennguyenduy' />
+              </CardBody>
+              <CardFooter>
+                <Button color='danger' id='toggler'>
+                  Close
+                </Button>
+              </CardFooter>
+            </Card>
+          </UncontrolledCollapse>
+        </div>
       </div>
     );
   }
