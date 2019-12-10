@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { UncontrolledCollapse, Button, CardBody, CardFooter, Card } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
 import QRCode from 'qrcode.react';
 import './index.css';
 // import * as actions from '../../../redux/actions';
@@ -15,9 +15,10 @@ class RetailerAddInfo extends Component {
       RetailerImDate: null,
       Quantity: null,
       Product_ProcessorID: null,
-      loading: false
+      loadingModal: false
     };
-    this.submit = this.submit.bind(this);
+    this.submitTransaction = this.submitTransaction.bind(this);
+    this.downloadQR = this.downloadQR.bind(this);
   }
 
   handleChangeProductId = (e) => {
@@ -39,31 +40,51 @@ class RetailerAddInfo extends Component {
     this.setState({ Product_ProcessorID: e.target.value });
   };
 
-  async submit() {
-    console.log('Gen QR code and submit success');
-  }
+  submitTransaction = async () => {
+    // await submit transaction success
+    await this.setState({
+      loadingModal: true
+    });
+  };
+
+  downloadQR = () => {
+    const canvas = document.getElementById('product-qrcode');
+    const pngUrl = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    let downloadLink = document.createElement('a');
+    downloadLink.href = pngUrl;
+    downloadLink.download = 'product-qrcode.png';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
+
+  closeModal = () => {
+    this.setState({
+      loadingModal: false
+    });
+  };
 
   render() {
     return (
       <div className='form-style-10'>
         <h1>Đăng ký phát hành thực phẩm</h1>
-        <form novalidate>
+        <form>
           <div className='section'>Thông tin thực phẩm</div>
           <div className='inner-wrap'>
             <label>
-              Product ID{' '}
+              Product ID
               <input id='text' type='text' name='field' onChange={this.handleChangeProductId} />
             </label>
             <label>
-              Product Name{' '}
+              Product Name
               <input id='text' type='text' name='field' onChange={this.handleChangeProductName} />
             </label>
             <label>
-              Retailer ID{' '}
+              Retailer ID
               <input id='text' type='text' name='field' onChange={this.handleChangeRetailerId} />
             </label>
             <label>
-              Import Date{' '}
+              Import Date
               <input id='text' type='text' name='field' onChange={this.handleChangeImDate} />
             </label>
             <label>
@@ -77,44 +98,44 @@ class RetailerAddInfo extends Component {
           </div>
         </form>
         <div className='button-section'>
-          <Button color='primary' id='toggler'>
-            View QR Code
-          </Button>
-          <Button onClick={this.submit}>Submit</Button>
-          <UncontrolledCollapse toggler='#toggler'>
-            <Card>
-              <CardBody>
-                <QRCode
-                  level='H'
-                  includeMargin
-                  value={
-                    'Product ID: ' +
-                    this.state.ProductID +
-                    '\n' +
-                    'Product name: ' +
-                    this.state.ProductName +
-                    '\n' +
-                    'Retailer ID: ' +
-                    this.state.RetailerID +
-                    '\n' +
-                    'Import Date: ' +
-                    this.state.RetailerImDate +
-                    '\n' +
-                    'Quantity: ' +
-                    this.state.Quantity +
-                    '\n' +
-                    'Processor ID: ' +
-                    this.state.Product_ProcessorID
-                  }
-                />
-              </CardBody>
-              <CardFooter>
-                <Button color='danger' id='toggler'>
-                  Close
-                </Button>
-              </CardFooter>
-            </Card>
-          </UncontrolledCollapse>
+          <Button onClick={this.submitTransaction}>Submit & Gen QR Code</Button>
+          <Modal isOpen={this.state.loadingModal}>
+            <ModalHeader>Mã QR Của Sản Phẩm</ModalHeader>
+            <ModalBody>
+              <QRCode
+                id='product-qrcode'
+                level='H'
+                includeMargin
+                value={
+                  'Product ID: ' +
+                  this.state.ProductID +
+                  '\n' +
+                  'Product name: ' +
+                  this.state.ProductName +
+                  '\n' +
+                  'Retailer ID: ' +
+                  this.state.RetailerID +
+                  '\n' +
+                  'Import Date: ' +
+                  this.state.RetailerImDate +
+                  '\n' +
+                  'Quantity: ' +
+                  this.state.Quantity +
+                  '\n' +
+                  'Processor ID: ' +
+                  this.state.Product_ProcessorID
+                }
+              />
+            </ModalBody>
+            <ModalFooter>
+              <a href='#' onClick={this.downloadQR}>
+                Download QR
+              </a>
+              <Button color='danger' onClick={this.closeModal}>
+                Close
+              </Button>
+            </ModalFooter>
+          </Modal>
         </div>
       </div>
     );
