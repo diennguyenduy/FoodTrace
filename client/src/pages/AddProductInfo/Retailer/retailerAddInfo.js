@@ -21,23 +21,10 @@ class RetailerAddInfo extends Component {
     this.downloadQR = this.downloadQR.bind(this);
   }
 
-  handleChangeProductId = (e) => {
-    this.setState({ ProductID: e.target.value });
-  };
-  handleChangeProductName = (e) => {
-    this.setState({ ProductName: e.target.value });
-  };
-  handleChangeRetailerId = (e) => {
-    this.setState({ RetailerID: e.target.value });
-  };
-  handleChangeImDate = (e) => {
-    this.setState({ RetailerImDate: e.target.value });
-  };
-  handleChangeQuantity = (e) => {
-    this.setState({ Quantity: e.target.value });
-  };
-  handleChangeProcessorId = (e) => {
-    this.setState({ Product_ProcessorID: e.target.value });
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   };
 
   submitTransaction = async () => {
@@ -73,27 +60,32 @@ class RetailerAddInfo extends Component {
           <div className='inner-wrap'>
             <label>
               Product ID
-              <input id='text' type='text' name='field' onChange={this.handleChangeProductId} />
+              <input id='text' type='text' name='ProductID' onChange={this.handleChange} />
             </label>
             <label>
               Product Name
-              <input id='text' type='text' name='field' onChange={this.handleChangeProductName} />
+              <input id='text' type='text' name='ProductName' onChange={this.handleChange} />
             </label>
             <label>
               Retailer ID
-              <input id='text' type='text' name='field' onChange={this.handleChangeRetailerId} />
+              <input id='text' type='text' name='RetailerID' onChange={this.handleChange} />
             </label>
             <label>
               Import Date
-              <input id='text' type='text' name='field' onChange={this.handleChangeImDate} />
+              <input id='text' type='text' name='RetailerImDate' onChange={this.handleChange} />
             </label>
             <label>
               Quantity
-              <input id='text' type='text' name='field' onChange={this.handleChangeQuantity} />
+              <input id='text' type='text' name='Quantity' onChange={this.handleChange} />
             </label>
             <label>
               Product Processor ID
-              <input id='text' type='text' name='field' onChange={this.handleChangeProcessorId} />
+              <input
+                id='text'
+                type='text'
+                name='Product_ProcessorID'
+                onChange={this.handleChange}
+              />
             </label>
           </div>
         </form>
