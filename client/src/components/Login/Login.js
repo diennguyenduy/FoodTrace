@@ -1,16 +1,20 @@
-import React, { Component } from 'react';
-import { Form, Button, Input } from 'reactstrap';
-import './login.css';
+import React, { Component } from "react";
+import { Form, Button, Input } from "reactstrap";
+import "./login.css";
 
 class Login extends Component {
   constructor(pros) {
     super(pros);
     this.state = {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       loading: false
     };
   }
+
+  // componentWillMount() {
+  //   localStorage.setItem("access_token_trace", "");
+  // }
 
   onChange = (e) => {
     this.setState({
@@ -25,8 +29,9 @@ class Login extends Component {
     e.preventDefault();
     const { username, password } = this.state;
 
-    if (username === 'admin' && password === 'admin') {
-      window.location.replace('/');
+    if (username === "admin" && password === "admin") {
+      // localStorage.setItem("access_token_trace", username);
+      window.location.replace("/home");
     }
   };
   render() {
@@ -37,11 +42,17 @@ class Login extends Component {
         </div>
         <div className='social-login'>
           <a href='https://facebook.com'>
-            <img id='social-icon' src={require('../../assets/img/facebook.png')} />
+            <img
+              id='social-icon'
+              src={require("../../assets/img/facebook.png")}
+            />
             Login in with facebook
           </a>
           <a href='https://accounts.google.com'>
-            <img id='social-icon' src={require('../../assets/img/search.png')} />
+            <img
+              id='social-icon'
+              src={require("../../assets/img/search.png")}
+            />
             log in with Google
           </a>
         </div>
@@ -73,7 +84,7 @@ class Login extends Component {
               </Button>
             </div>
           ) : (
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: "center" }}>
               <div className='spinner-border text-success'></div>
             </div>
           )}

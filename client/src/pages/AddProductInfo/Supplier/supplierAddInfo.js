@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './index.css';
+import React, { Component } from "react";
+import "./index.css";
 // import * as actions from '../../../redux/actions';
 // import store from '../../../redux/store';
 
@@ -20,7 +20,7 @@ class SupplierAddInfo extends Component {
     return (
       <div className='form-style-10'>
         <h1>Đăng ký phát hành thực phẩm</h1>
-        <form method='post' action='#' novalidate>
+        <form noValidate>
           <div className='section'>Thông tin thực phẩm</div>
           <div className='inner-wrap'>
             <label>
