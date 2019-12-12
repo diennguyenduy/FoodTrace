@@ -5,8 +5,6 @@
   "dependencies": {
     "boostrap": "^2.0.0",
     "bootstrap": "^4.4.1",
-    "fabric-client": "^1.4.4",
-    "fabric-network": "^1.4.4",
     "path": "^0.12.7",
     "qrcode.react": "^1.0.0",
     "react": "^16.12.0",

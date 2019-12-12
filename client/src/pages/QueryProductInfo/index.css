@@ -32,11 +32,12 @@
   background-image: linear-gradient(to top, #0483a0, #31b2c3);
 }
 
-.query-product-info .nav-button:active {
+.nav-button:active {
   outline: 0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
   -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+  background-color: #31b2c3;
 }
 
 .query-product-info .nav-button::-moz-focus-inner {

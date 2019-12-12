@@ -1,0 +1,18 @@
+.users-list {
+  text-align: center;
+  padding: 5%;
+}
+
+.add-button {
+  padding: 10px;
+  background-color: #fafafa;
+  display: inline-block;
+  float: right;
+  margin-right: 5%;
+}
+
+#add-button {
+  margin-top: 3%;
+  width: 100px;
+  height: 42px;
+}

@@ -1,15 +1,23 @@
-import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, Row, Col, Button } from 'reactstrap';
-import QueryById from './QueryById/queryById';
-import QueryAll from './QueryAll/queryAll';
-import History from './History/history';
-import './index.css';
+import React, { Component } from "react";
+import {
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  Row,
+  Col,
+  Button
+} from "reactstrap";
+import QueryById from "./QueryById/queryById";
+import QueryAll from "./QueryAll/queryAll";
+import History from "./History/history";
+import "./index.css";
 
 class QueryProductInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: '1'
+      activeTab: "1"
     };
     // this.toggle = this.toggle.bind(this);
   }
@@ -26,10 +34,10 @@ class QueryProductInfo extends Component {
       <div className='query-product-info'>
         <Nav card>
           <NavItem>
-            {' '}
+            {" "}
             <Button
               className='nav-button'
-              onClick={() => this.toggle('1')}
+              onClick={() => this.toggle("1")}
               data-toggle='tooltip'
               data-placement='bottom'
               title='All the history of transaction'
@@ -40,7 +48,7 @@ class QueryProductInfo extends Component {
           <NavItem>
             <Button
               className='nav-button'
-              onClick={() => this.toggle('2')}
+              onClick={() => this.toggle("2")}
               data-toggle='tooltip'
               data-placement='bottom'
               title='Query informations of all product'
@@ -49,10 +57,10 @@ class QueryProductInfo extends Component {
             </Button>
           </NavItem>
           <NavItem>
-            {' '}
+            {" "}
             <Button
               className='nav-button'
-              onClick={() => this.toggle('3')}
+              onClick={() => this.toggle("3")}
               data-toggle='tooltip'
               data-placement='bottom'
               title='Query the informations of a product by its ID'

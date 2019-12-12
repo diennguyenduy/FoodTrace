@@ -13,13 +13,13 @@ body {
 .hand {
   height: 260px;
   position: relative;
-  top: 130px;
+  top: 120px;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
   display: flex;
-  margin-left: 28%;
+  margin-left: 17%;
 }
 
 .card {
